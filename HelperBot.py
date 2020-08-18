@@ -21,7 +21,7 @@ async def on_ready():
 @bot.command
 async def test(ctx):
     """For testing if Bot is alive"""
-    await ctx.send("I'm alive! At least...")
+    await ctx.channel.send("I'm alive! At least...")
 
 
 if __name__ == "__main__":  # check if in main

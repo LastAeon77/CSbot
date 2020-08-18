@@ -5,6 +5,7 @@ import requests
 import sys
 import pandas as pd
 
+pd.options.mode.chained_assignment = None
 sys.path.insert(1, "./Api/")
 from GoogleApi import google_query
 from GoogleApi import api_key
@@ -29,6 +30,10 @@ class Cpp:
         df = df_list[0]
         if len(df.index) > 1:
             df = df.iloc[:, :2]
+            temp = df.definition.apply(
+                lambda x: x.rsplit(maxsplit=len(x.split()) - 3)[0]
+            )
+            df.loc[:, ("definition")] = temp
             finalStr = ("```") + df.to_string(index=False) + ("```")
             return finalStr
         else:
@@ -52,24 +57,39 @@ class CSsearch(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def cpp(self, ctx, arx: str):
+    async def cpp(self, ctx, *, arx: str):
         """Searches cplusplus for information"""
         loading = await ctx.send("Please wait a moment")
         topic = Cpp(arx)
-        embed = discord.Embed()
-        imageLink = ""
         try:
-            imageLink = topic.scrapeImg()
-            embed.set_image(url=imageLink)
+            embed = discord.Embed()
+            imageLink = ""
+            try:
+                imageLink = topic.scrapeImg()
+                embed.set_image(url=imageLink)
+            except:
+                pass
+            table = topic.scrapeTable()
+            descript = topic.scrapeDescription()
+            embed.set_author(name=topic.getTitle().capitalize())
+            embed.description = descript + table
+            embed.set_footer(text="Link: " + topic.link)
+            embed.color = 3066993
+            await ctx.send(embed=embed)
+            await loading.delete()
         except:
-            pass
-        table = topic.scrapeTable()
-        descript = topic.scrapeDescription()
-        embed.set_author(name=topic.getTitle().capitalize())
-        embed.description = descript + table
-        embed.set_footer(text="Link: " + topic.link)
-        await ctx.send(embed=embed)
-        await loading.delete()
+            embed = discord.Embed()
+            embed.set_author(name="Not Available")
+            embed.color = 3066993
+            embed.description = (
+                "Your Search isn't available, the first link that showed up was: "
+                + topic.link
+            )
+            embed.set_image(
+                url="https://i.pinimg.com/236x/3a/52/08/3a52083989b854ab0e72efeb3531f6d3.jpg"
+            )
+            await ctx.send(embed=embed)
+            await loading.delete()
 
 
 def setup(bot):
@@ -82,8 +102,12 @@ def setup(bot):
 # df_list = pd.read_html(stuff.text)  # this parses all the tables in webpages to a list
 # df = df_list[0]
 # df = df.iloc[:, :2]
+# df.loc[:, ("definition")] = df.definition.apply(
+#     lambda x: x.rsplit(maxsplit=len(x.split()) - 3)[0]
+# )
+
 # table = df.to_string(index=False)
-# print((table))
+# k = table.split(" ")
 
 # fl = []
 # for stuff in k:

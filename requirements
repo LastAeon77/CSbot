@@ -1,0 +1,5 @@
+Discord:
+python3 -m pip install -U discord.py
+
+Google api:
+pip3 install google-api-python-client

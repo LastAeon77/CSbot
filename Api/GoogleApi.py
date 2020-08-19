@@ -24,9 +24,9 @@ def google_query(query, api_key, cse_id, **kwargs):
     return query_results["items"]
 
 
-my_results_list = []
-my_results = google_query("C++ for loop", api_key, cse_id, num=1)
-# print(my_results[0]["link"])
-for result in my_results:
-    my_results_list.append(result["link"])
-    # print(result["link"])
+# my_results_list = []
+# my_results = google_query("C++ for loop", api_key, cse_id, num=1)
+# # print(my_results[0]["link"])
+# for result in my_results:
+#     my_results_list.append(result["link"])
+#     print(result["link"])

@@ -4,7 +4,7 @@ import json
 
 import os
 
-bot = commands.Bot(command_prefix=commands.when_mentioned_or("."))
+bot = commands.Bot(command_prefix=commands.when_mentioned_or("c!"))
 with open("resources/settings.json", "r") as f:
     bot.config = json.load(f)
 

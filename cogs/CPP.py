@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands
 from bs4 import BeautifulSoup
-import requests
+import aiohttp
 import sys
 import pandas as pd
 
@@ -13,11 +13,9 @@ from GoogleApi import cse_id
 
 
 class Cpp:
-    def __init__(self, searchTerm):
-        k = google_query(searchTerm, api_key, cse_id, num=1)
-        self.link = k[0]["link"]
-        source = requests.get(self.link).text
-        self.soup = BeautifulSoup(source, "lxml")
+    def __init__(self, soup, link):
+        self.link = link
+        self.soup = soup
 
     def scrapeDescription(self):
         D = self.soup.find("section")
@@ -56,11 +54,20 @@ class CSsearch(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
+    async def fetch(self, url):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(str(url)) as resp:
+                if resp.status == 200:
+                    return BeautifulSoup(await resp.text(), "lxml")
+
     @commands.command()
     async def cpp(self, ctx, *, arx: str):
         """Searches cplusplus for information"""
         loading = await ctx.send("Please wait a moment")
-        topic = Cpp(arx)
+        k = google_query(arx, api_key, cse_id, num=1)
+        link = k[0]["link"]
+        soup = await self.fetch(link)
+        topic = Cpp(soup, link)
         try:
             embed = discord.Embed()
             imageLink = ""
@@ -96,18 +103,9 @@ def setup(bot):
     bot.add_cog(CSsearch(bot))
 
 
-# k = google_query("array", api_key, cse_id, num=1)
-# link = k[0]["link"]
-# stuff = requests.get(link)
-# df_list = pd.read_html(stuff.text)  # this parses all the tables in webpages to a list
-# df = df_list[0]
-# df = df.iloc[:, :2]
-# df.loc[:, ("definition")] = df.definition.apply(
-#     lambda x: x.rsplit(maxsplit=len(x.split()) - 3)[0]
-# )
-
 # table = df.to_string(index=False)
 # k = table.split(" ")
+# print(table)
 
 # fl = []
 # for stuff in k:

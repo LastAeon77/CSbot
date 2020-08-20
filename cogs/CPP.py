@@ -79,7 +79,7 @@ class CSsearch(commands.Cog):
         )
         df["Name"] = df["Name"].str.lower()
         row = df.loc[df["Name"] == arx.lower()]
-        if row:
+        if not row.empty:
             embed = discord.Embed()
             embed.set_author(name=row["Name"][0])
             embed.description = (
@@ -93,7 +93,11 @@ class CSsearch(commands.Cog):
             final_str = ""
             for names in otherdf:
                 final_str = final_str + "> " + names + "\n"
-            await ctx.send(final_str)
+            embed = discord.Embed()
+            embed.set_author(name=f"We Couldn't find :{arx}")
+            embed.description = "Did you mean: \n" + final_str
+            embed.color = 3066993
+            await ctx.send(embed=embed)
 
     async def fetch(self, url):
         async with aiohttp.ClientSession() as session:
@@ -152,7 +156,6 @@ def setup(bot):
     bot.add_cog(CSsearch(bot))
 
 
-# df = pd.read_csv(
 #     "https://raw.githubusercontent.com/LastAeon77/CSbot/master/Data/searchCpp.csv"
 # )
 # df["Name"] = df["Name"].str.lower()

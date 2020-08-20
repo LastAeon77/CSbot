@@ -19,13 +19,13 @@ async def on_ready():
 
 
 @bot.command()
-async def test(ctx, arx):
+async def test(ctx):
     """For testing if Bot is alive"""
     await ctx.channel.send("I'm alive! At least...")
 
 
 @bot.command()
-async def paidBy(ctx, arx):
+async def paidBy(ctx):
     """Joke"""
     await ctx.channel.send(
         "This is how the creator is getting paid: \nhttps://www.youtube.com/watch?v=DOfKWlAjJec"

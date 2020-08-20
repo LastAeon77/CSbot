@@ -18,13 +18,13 @@ async def on_ready():
     print("------")
 
 
-@bot.command
+@bot.command()
 async def test(ctx, arx):
     """For testing if Bot is alive"""
     await ctx.channel.send("I'm alive! At least...")
 
 
-@bot.command
+@bot.command()
 async def paidBy(ctx, arx):
     """Joke"""
     await ctx.channel.send(

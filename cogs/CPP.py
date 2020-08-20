@@ -78,12 +78,22 @@ class CSsearch(commands.Cog):
             "https://raw.githubusercontent.com/LastAeon77/CSbot/master/Data/searchCpp.csv"
         )
         df["Name"] = df["Name"].str.lower()
-        row = df.loc[df['Name'] == arx.lower()]
-        embed = discord.Embed()
-        embed.set_author(name=row['Name'])
-        embed.description = (row['Description'] + row['Code'] + row['Example'])
-        embed.set_image(url=row['Image Link'])
-        await ctx.send(embed=embed)
+        row = df.loc[df["Name"] == arx.lower()]
+        if row:
+            embed = discord.Embed()
+            embed.set_author(name=row["Name"][0])
+            embed.description = (
+                row["Description"][0] + row["Code"][0] + row["Result"][0]
+            )
+            embed.set_image(url=row["Image Link"][0])
+            await ctx.send(embed=embed)
+        else:
+            otherdf = df[df.Name.str[:2].str.lower() == arx[:2].lower()]
+            otherdf = otherdf["Name"]
+            final_str = ""
+            for names in otherdf:
+                final_str = final_str + "> " + names + "\n"
+            await ctx.send(final_str)
 
     async def fetch(self, url):
         async with aiohttp.ClientSession() as session:
@@ -142,30 +152,13 @@ def setup(bot):
     bot.add_cog(CSsearch(bot))
 
 
-# url = "http://www.cplusplus.com/doc/tutorial/functions/"
-# link = requests.get(url).text
-# soup = BeautifulSoup(link, "lxml")
-# sort = Cpp(soup, url)
-
-# print(sort.scrapeTable())
-
-
-# content = soup.find("div", attrs={"id": "I_content"})
-# table = df.to_string(index=False)
-# k = table.split(" ")
-# print(table)
-
-# fl = []
-# for stuff in k:
-#     fl.append(stuff)
-# print(fl[0].get_text()[:400])
-# # https://stackoverflow.com/questions/23377533/python-beautifulsoup-parsing-table
-# data = []
-# table = soup.find("table")
-# table_body = table.find("tbody")
-
-# print(table.get_text())
-
-
-# img = soup.find("img")
-# print(img["src"])
+# df = pd.read_csv(
+#     "https://raw.githubusercontent.com/LastAeon77/CSbot/master/Data/searchCpp.csv"
+# )
+# df["Name"] = df["Name"].str.lower()
+# arx = "int"
+# row = df.loc[df["Name"] == arx.lower()]
+# embed = discord.Embed()
+# print(row['Name'][0])
+# print(row["Description"][0] + row["Code"][0] + row["Result"][0])
+# print(row["Image Link"])

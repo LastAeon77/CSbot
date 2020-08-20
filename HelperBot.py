@@ -19,9 +19,17 @@ async def on_ready():
 
 
 @bot.command
-async def test(ctx):
+async def test(ctx, arx):
     """For testing if Bot is alive"""
     await ctx.channel.send("I'm alive! At least...")
+
+
+@bot.command
+async def paidBy(ctx, arx):
+    """Joke"""
+    await ctx.channel.send(
+        "This is how the creator is getting paid: \nhttps://www.youtube.com/watch?v=DOfKWlAjJec"
+    )
 
 
 if __name__ == "__main__":  # check if in main

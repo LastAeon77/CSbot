@@ -1,0 +1,7 @@
+Name	Description	Image Link	Code Example	Result
+int	Not smaller than short. At least 16 bits.	https://media1.giphy.com/media/12I7wfqHTWTU9G/200.gif	"```
+int x= 64
+print(x)
+```"	"```
+64
+```"

@@ -32,6 +32,12 @@ async def paidBy(ctx):
     )
 
 
+@bot.command()
+async def backquote(ctx):
+    """My computer can't type backward single quote"""
+    await ctx.channel.send("`")
+
+
 if __name__ == "__main__":  # check if in main
     for file in os.listdir("cogs"):
         if file.endswith(".py"):

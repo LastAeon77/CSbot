@@ -2,7 +2,6 @@ import discord
 from discord.ext import commands
 from bs4 import BeautifulSoup
 import aiohttp
-import requests
 import sys
 import pandas as pd
 
@@ -18,9 +17,9 @@ class Cpp:
         self.link = link
         self.soup = soup
 
-    def testscrapeDescription(self):
-        D = self.soup.find("section")
-        return D.get_text()
+    # def testscrapeDescription(self):
+    #     D = self.soup.find("section")
+    #     return D.get_text()
 
     def scrapeDescription(self):
         D = self.soup.find("section")
@@ -71,6 +70,20 @@ class Cpp:
 class CSsearch(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command()
+    async def search(self, ctx, *, arx: str):
+        """Searches CSV for """
+        df = pd.read_csv(
+            "https://raw.githubusercontent.com/LastAeon77/CSbot/master/Data/searchCpp.csv"
+        )
+        df["Name"] = df["Name"].str.lower()
+        row = df.loc[df['Name'] == arx.lower()]
+        embed = discord.Embed()
+        embed.set_author(name=row['Name'])
+        embed.description = (row['Description'] + row['Code'] + row['Example'])
+        embed.set_image(url=row['Image Link'])
+        await ctx.send(embed=embed)
 
     async def fetch(self, url):
         async with aiohttp.ClientSession() as session:

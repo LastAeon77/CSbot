@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from bs4 import BeautifulSoup
 import aiohttp
+import requests
 import sys
 import pandas as pd
 
@@ -17,25 +18,42 @@ class Cpp:
         self.link = link
         self.soup = soup
 
+    def testscrapeDescription(self):
+        D = self.soup.find("section")
+        return D.get_text()
+
     def scrapeDescription(self):
         D = self.soup.find("section")
+        # D = self.soup.find("a", attrs={"class": "image image-thumbnail"})
         # backward = BeautifulSoup("```", "lxml")
-        description = D.get_text()[:500] + "..."
-        return description
+        description = D.get_text()
+        if len(D.get_text()) > 499:
+            return description[:500] + "..."
+        else:
+            return description
 
     def scrapeTable(self):
         df_list = pd.read_html(self.link)
         df = df_list[0]
         if len(df.index) > 1:
-            df = df.iloc[:, :2]
-            temp = df.definition.apply(
-                lambda x: x.rsplit(maxsplit=len(x.split()) - 3)[0]
-            )
-            df.loc[:, ("definition")] = temp
-            finalStr = ("```") + df.to_string(index=False) + ("```")
-            return finalStr
+            try:
+                df = df.iloc[:, :2]
+                temp = df.definition.apply(
+                    lambda x: x.rsplit(maxsplit=len(x.split()) - 3)[0]
+                )
+                df.loc[:, ("definition")] = temp
+                finalStr = ("```") + df.to_string(index=False) + ("```")
+                return finalStr
+
+            except:
+                T = self.soup.find("div", attrs={"class": "auto"})
+                T = T.find("table")
+                table = ("```") + T.get_text() + ("```")
+                return table
+
         else:
-            T = self.soup.find("table")
+            T = self.soup.find("div", attrs={"class": "auto"})
+            T = T.find("table")
             table = ("```") + T.get_text() + ("```")
             return table
 
@@ -61,8 +79,16 @@ class CSsearch(commands.Cog):
                     return BeautifulSoup(await resp.text(), "lxml")
 
     @commands.command()
+    async def cppReport(self, ctx, *, arx: str):
+        """Report commands that you find wrong"""
+        with open("./cogs/CppReport.txt", "a") as reporttxt:
+            # print(arx + " Has been added")
+            reporttxt.write(arx)
+        await ctx.send(f"You have reported a problem with: {arx}")
+
+    @commands.command()
     async def cpp(self, ctx, *, arx: str):
-        """Searches cplusplus for information"""
+        """Searches cplusplus.com for information"""
         loading = await ctx.send("Please wait a moment")
         k = google_query(arx, api_key, cse_id, num=1)
         link = k[0]["link"]
@@ -103,6 +129,15 @@ def setup(bot):
     bot.add_cog(CSsearch(bot))
 
 
+# url = "http://www.cplusplus.com/doc/tutorial/functions/"
+# link = requests.get(url).text
+# soup = BeautifulSoup(link, "lxml")
+# sort = Cpp(soup, url)
+
+# print(sort.scrapeTable())
+
+
+# content = soup.find("div", attrs={"id": "I_content"})
 # table = df.to_string(index=False)
 # k = table.split(" ")
 # print(table)

@@ -24,7 +24,7 @@ class LearnGit(commands.Cog):
             if row["Image"].values[0] != 0:
                 embed.set_image(url=row["Image"].values[0])
             if row["Source"].values[0] != 0:
-                embed.set_footer(text=row["Source"].values[0])
+                embed.set_footer(text="Source = " + row["Source"].values[0])
             await ctx.send(embed=embed)
         else:
             otherdf = df[df.Name.str[:1].str.lower() == arx[:1].lower()]

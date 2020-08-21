@@ -36,9 +36,11 @@ Used to navigate to other branches. Example of switching to master branch:
 `git checkout master`
 ",,https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
 merge,"Used to merge a sub branch into master branch. Used when code has been reviewed and ready for deployment.
-You must be in the master branch to merge the sub branch.
+You must be in the sub branch to merge the sub branch.
 
-`git merge sub-branch`",,https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
+`git merge sub-branch` or alternatively `git merge sub-branch master`(This one can be done anywhere) 
+
+No branch is lost",https://i.imgur.com/kgXvVWW.png,https://www.atlassian.com/git/tutorials/merging-vs-rebasing
 branch,"This command is used to create a new branch
 
 `git branch new-branch`
@@ -72,3 +74,10 @@ add,"Add files to commit.
 `git add <file>` to add new file
 
 `git add -u` to add only tracked files (To track files do the command above)",https://i.imgur.com/1sz03Mv.png,
+rebase,"This moves the entire feature branch to begin on the tip of the master branch, effectively incorporating all of the new commits in master. 
+But, instead of using a merge commit, rebasing re-writes the project history by creating brand new commits for each commit in the original branch.
+
+`git checkout sub-branch`
+`git rebase master`
+
+",https://i.imgur.com/A0AjOFB.png,https://www.atlassian.com/git/tutorials/merging-vs-rebasing

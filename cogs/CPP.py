@@ -2,14 +2,11 @@ import discord
 from discord.ext import commands
 from bs4 import BeautifulSoup
 import aiohttp
-import sys
 import pandas as pd
-
-pd.options.mode.chained_assignment = None
-sys.path.insert(1, "./Api/")
-from GoogleApi import google_query
-from GoogleApi import api_key
-from GoogleApi import cse_id
+from Api.GoogleApi import google_query
+from Api.GoogleApi import api_key
+from Api.GoogleApi import cse_id
+from utils.checks import owner_check
 
 
 class Cpp:
@@ -114,10 +111,21 @@ class CSsearch(commands.Cog):
         await ctx.send(f"You have reported a problem with: {arx}")
 
     @commands.command()
+    @commands.check(owner_check)
+    async def addLink(self, ctx, arx):
+        """Add links to hook.csv, `Search,Link` Format"""
+        """Example: int, www.int.com"""
+        search = arx.split(",")
+
+        with open("./cogs/hook.csv", "a") as hook:
+            hook.write(arx)
+        await ctx.send(f"You have added {search[0]} with link: {search[1]}")
+
+    @commands.command()
     async def cpp(self, ctx, *, arx: str):
         """Searches cplusplus.com for information"""
         loading = await ctx.send("Please wait a moment")
-        df = pd.read_csv("hook.csv")
+        df = pd.read_csv("./cogs/hook.csv")
         # Search HOok csv for direct link
         df["Search"] = df["Search"].str.lower()
         row = df.loc[df["Search"] == arx.lower()]
@@ -126,7 +134,7 @@ class CSsearch(commands.Cog):
             k = google_query(arx, api_key, cse_id, num=1)
             link = k[0]["link"]
         else:
-            k = row["Link"][0]
+            k = row['Link'].values[0]
             link = k
 
         soup = await self.fetch(link)
@@ -164,14 +172,3 @@ class CSsearch(commands.Cog):
 
 def setup(bot):
     bot.add_cog(CSsearch(bot))
-
-
-#     "https://raw.githubusercontent.com/LastAeon77/CSbot/master/Data/searchCpp.csv"
-# )
-# df["Name"] = df["Name"].str.lower()
-# arx = "int"
-# row = df.loc[df["Name"] == arx.lower()]
-# embed = discord.Embed()
-# print(row['Name'][0])
-# print(row["Description"][0] + row["Code"][0] + row["Result"][0])
-# print(row["Image Link"])

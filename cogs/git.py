@@ -1,11 +1,28 @@
 import discord
 from discord.ext import commands
 import pandas as pd
+from utils.checks import owner_check
 
 
 class LearnGit(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+
+    @commands.command()
+    @commands.check(owner_check)
+    async def git(self, ctx):
+        """Prints every git command available"""
+        df = pd.read_csv(
+            "https://raw.githubusercontent.com/LastAeon77/CSbot/master/Data/gitInfo.csv"
+        )
+        temp = df["Name"]
+        final_Str = ""
+        for com in temp:
+            final_Str += com + "\n"
+        embed = discord.Embed()
+        embed.set_author(name="All git commands currently")
+        embed.description = final_Str
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def git(self, ctx, *, arx: str):

@@ -7,6 +7,7 @@ from Api.GoogleApi import google_query
 from Api.GoogleApi import api_key
 from Api.GoogleApi import cse_id
 from utils.checks import owner_check
+from utils.csvEdit import append_list_as_row
 
 
 class Cpp:
@@ -117,9 +118,7 @@ class CSsearch(commands.Cog):
         """Add links to hook.csv, `Search,Link` Format"""
         """Example: int, www.int.com"""
         search = arx.split(",")
-
-        with open("./cogs/hook.csv", "a") as hook:
-            hook.write(arx)
+        append_list_as_row("./cogs/hook.csv", search)
         await ctx.send(f"You have added {search[0]} with link: {search[1]}")
 
     @commands.command()
@@ -135,7 +134,7 @@ class CSsearch(commands.Cog):
             k = google_query(arx, api_key, cse_id, num=1)
             link = k[0]["link"]
         else:
-            k = row['Link'].values[0]
+            k = row["Link"].values[0]
             link = k
 
         soup = await self.fetch(link)

@@ -10,7 +10,7 @@ class LearnGit(commands.Cog):
 
     @commands.command()
     @commands.check(owner_check)
-    async def git(self, ctx):
+    async def gitAll(self, ctx):
         """Prints every git command available"""
         df = pd.read_csv(
             "https://raw.githubusercontent.com/LastAeon77/CSbot/master/Data/gitInfo.csv"
@@ -20,6 +20,7 @@ class LearnGit(commands.Cog):
         for com in temp:
             final_Str += com + "\n"
         embed = discord.Embed()
+        embed.color = 15844367
         embed.set_author(name="All git commands currently")
         embed.description = final_Str
         await ctx.send(embed=embed)

@@ -83,6 +83,7 @@ class CSsearch(commands.Cog):
                 row["Description"][0] + row["Code"][0] + row["Result"][0]
             )
             embed.set_image(url=row["Image Link"][0])
+            embed.color = 2123412
             await ctx.send(embed=embed)
         else:
             otherdf = df[df.Name.str[:2].str.lower() == arx[:2].lower()]

@@ -18,7 +18,7 @@ commit,"Commits to whatever branch you are in with commend
 
 `git commit -a -m 'Added new features'`
 
--a for add, -m for the message you wrote with the commit",,
+-a for add, -m for the message you wrote with the commit",https://i.imgur.com/u05GZ7d.png,
 checkout -b,"Can be used to create new branch and switch to it at the same time.  
 
 ```git checkout -b iss53

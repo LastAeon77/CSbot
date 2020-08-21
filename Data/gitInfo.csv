@@ -81,3 +81,5 @@ But, instead of using a merge commit, rebasing re-writes the project history by 
 `git rebase master`
 
 ",https://i.imgur.com/A0AjOFB.png,https://www.atlassian.com/git/tutorials/merging-vs-rebasing
+Why,"According to the wise words of an intellectual: ",https://i.imgur.com/3y77oYa.png,A smart man
+amIsmart?,No:,https://i.imgur.com/AeVuHtO.png,An intellectual

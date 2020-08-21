@@ -117,8 +117,18 @@ class CSsearch(commands.Cog):
     async def cpp(self, ctx, *, arx: str):
         """Searches cplusplus.com for information"""
         loading = await ctx.send("Please wait a moment")
-        k = google_query(arx, api_key, cse_id, num=1)
-        link = k[0]["link"]
+        df = pd.read_csv("hook.csv")
+        # Search HOok csv for direct link
+        df["Search"] = df["Search"].str.lower()
+        row = df.loc[df["Search"] == arx.lower()]
+        link = ""
+        if row.empty:
+            k = google_query(arx, api_key, cse_id, num=1)
+            link = k[0]["link"]
+        else:
+            k = row["Link"][0]
+            link = k
+
         soup = await self.fetch(link)
         topic = Cpp(soup, link)
         try:

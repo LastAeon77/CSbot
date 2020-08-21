@@ -3,7 +3,7 @@ from discord.ext import commands
 import pandas as pd
 
 
-class CSsearch(commands.Cog):
+class LearnGit(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -11,16 +11,20 @@ class CSsearch(commands.Cog):
     async def git(self, ctx, *, arx: str):
         """Searches CSV for """
         df = pd.read_csv(
-            "https://raw.githubusercontent.com/LastAeon77/CSbot/master/Data/searchCpp.csv"
+            "https://raw.githubusercontent.com/LastAeon77/CSbot/master/Data/gitInfo.csv"
         )
         df["Name"] = df["Name"].str.lower()
         row = df.loc[df["Name"] == arx.lower()]
         if not row.empty:
+            row = row.fillna(0)
             embed = discord.Embed()
-            embed.set_author(name=row["Name"][0].capitalize())
-            embed.description = row["Info"]
-            if not row["Image"][0].empty:
-                embed.set_image(url=row["Image"][0])
+            temp = row["Name"].values[0].capitalize()
+            embed.set_author(name=temp)
+            embed.description = row["Info"].values[0]
+            if row["Image"].values[0] != 0:
+                embed.set_image(url=row["Image"].values[0])
+            if row["Source"].values[0] != 0:
+                embed.set_footer(text=row["Source"].values[0])
             await ctx.send(embed=embed)
         else:
             otherdf = df[df.Name.str[:1].str.lower() == arx[:1].lower()]
@@ -36,4 +40,4 @@ class CSsearch(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(CSsearch(bot))
+    bot.add_cog(LearnGit(bot))

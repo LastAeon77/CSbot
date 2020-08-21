@@ -3,22 +3,22 @@ install,"`Sudo apt-get install git` for Debian/Ubuntu users
 
 `brew install git` for Mac OS X users with Homebrew installed
 
-`https://git-scm.com/download/win` for Windows user","",https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
+`https://git-scm.com/download/win` for Windows user",,https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
 config,"This configs Git and tells Git who you are
 `git config --global user.email ""you@example.com""`
-`git config --global user.name ""Your Name""`","",https://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html
-Public Keys,Get public keys so you don't need to login everytime. Get at: https://github.com/settings/ssh for github users,"",https://help.github.com/articles/generating-ssh-keys
+`git config --global user.name ""Your Name""`",,https://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html
+Public Keys,Get public keys so you don't need to login everytime. Get at: https://github.com/settings/ssh for github users,,https://help.github.com/articles/generating-ssh-keys
 clone,"Use git clone to clone a repository into your local computer folder. Type:
 
 git clone <Insert link here>
 
 You can get the link like in the image here (Highlighted Portion):",https://i.imgur.com/DSZnDld.png,
--d,delete (Used for deleting branches),"",""
+-d,delete (Used for deleting branches),,
 commit,"Commits to whatever branch you are in with commend 
 
 `git commit -a -m 'Added new features'`
 
--a for add, -m for the message you wrote with the commit","",""
+-a for add, -m for the message you wrote with the commit",,
 checkout -b,"Can be used to create new branch and switch to it at the same time.  
 
 ```git checkout -b iss53
@@ -34,31 +34,31 @@ checkout,"(For making new branch and checkout, type c!git checkout -b)
 
 Used to navigate to other branches. Example of switching to master branch:
 `git checkout master`
-","",https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
+",,https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
 merge,"Used to merge a sub branch into master branch. Used when code has been reviewed and ready for deployment.
 You must be in the master branch to merge the sub branch.
 
-`git merge sub-branch`","",https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
+`git merge sub-branch`",,https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
 branch,"This command is used to create a new branch
 
 `git branch new-branch`
 
 You can also delete an existing branch
 
-`git branch -d new-branch`","",https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
+`git branch -d new-branch`",,https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging
 status,"Shows status of git. Shows unmerged files etc etc.
 Anything that has merge conflicts and hasn’t been resolved is listed as unmerged
 
-`git status`","",https://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html
+`git status`",,https://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html
 push,"If you're in master branch and trying to push to master, you can type: 
 `git push`
 
 Else, if you're pushing a new branch, you can instead type:
 
-`git push origin <branch name>`","",https://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html
+`git push origin <branch name>`",,https://dont-be-afraid-to-commit.readthedocs.io/en/latest/git/commandlinegit.html
 pull,"pulls in changes from whitgit. Advised to always do before pushing as good practice
 
-`git pull`","",""
+`git pull`",,
 stash,"The git stash command takes your uncommitted changes (both staged and unstaged), 
 saves them away for later use, and then reverts them from your working copy
 
@@ -66,9 +66,9 @@ saves them away for later use, and then reverts them from your working copy
 
 You can reapply the stash with `git stash pop`, this removes changes from your stash and reapplies them to working copy
 
-","",https://www.atlassian.com/git/tutorials/saving-changes/git-stash#stashing-your-work
+",,https://www.atlassian.com/git/tutorials/saving-changes/git-stash#stashing-your-work
 add,"Add files to commit.
 
 `git add <file>` to add new file
 
-`git add -u` to add only tracked files (To track files do the command above)","",""
+`git add -u` to add only tracked files (To track files do the command above)",https://i.imgur.com/1sz03Mv.png,

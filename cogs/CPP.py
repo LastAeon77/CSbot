@@ -20,7 +20,7 @@ class Cpp:
     #     return D.get_text()
 
     def scrapeDescription(self):
-        D = self.soup.find("section")
+        D = self.soup.find("div", attrs={"id": "I_content"})
         # D = self.soup.find("a", attrs={"class": "image image-thumbnail"})
         # backward = BeautifulSoup("```", "lxml")
         description = D.get_text()

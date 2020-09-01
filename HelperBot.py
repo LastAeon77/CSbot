@@ -1,7 +1,6 @@
 # import discord
 from discord.ext import commands
 import json
-
 import os
 
 bot = commands.Bot(command_prefix=commands.when_mentioned_or("c!"))

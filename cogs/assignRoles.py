@@ -1,6 +1,7 @@
 from discord.ext import commands
 import discord
 from discord.utils import get
+from discord import Status
 from utils.checks import member_check
 import random
 
@@ -32,8 +33,9 @@ class CSRoles(commands.Cog):
 
     @commands.check(member_check)
     @commands.command()
-    async def assignRolestoSection(self, ctx, k):
-        """Type in like this: c!assignRolestoSection <section>,<Group of>"""
+    async def allotSec(self, ctx, k="Section_1,2"):
+        """c!allotS <section>,<Group of> Example: c!allotSec Section_1,2"""
+        print(ctx.author)
         random.seed()
         sampleRole = []
         x = ctx.guild.members
@@ -51,13 +53,13 @@ class CSRoles(commands.Cog):
             sampleRole.append(f"g{number_of_group+1}")
         # sectionR = get(ctx.message.guild.roles, name=sectionrole)
         random.shuffle(sampleRole)
-        print(sampleRole)
         for member in x:
-            for role in member.roles:
-                if sectionrole == str(role):
-                    g = get(ctx.message.guild.roles, name=sampleRole[count])
-                    await member.add_roles(g)
-                    count += 1
+            if member.status == Status.online:
+                for role in member.roles:
+                    if sectionrole == str(role):
+                        g = get(ctx.message.guild.roles, name=sampleRole[count])
+                        await member.add_roles(g)
+                        count += 1
         await self.distributeVC(ctx)
         await ctx.send(
             f"Succesful, everyone from {sectionrole} has been distributed accordingly"
@@ -65,16 +67,18 @@ class CSRoles(commands.Cog):
 
     @commands.check(member_check)
     @commands.command()
-    async def backToMain(self, ctx, sectionrole):
-        """Removes group role"""
+    async def btMain(self, ctx, sectionrole="Section_1"):
+        """Removes group role. Example: backToMain Section_1"""
+        print(ctx.author)
         await self.backtoMainVC(ctx)
         x = ctx.guild.members
         for member in x:
-            for r in member.roles:
-                if r.name[0] == "g":
-                    await member.remove_roles(r)
-                # if str(r) != sectionrole:
-                #     await member.remove_roles(str(r))
+            if member.status == Status.online:
+                for r in member.roles:
+                    if r.name[0] == "g":
+                        await member.remove_roles(r)
+                    # if str(r) != sectionrole:
+                    #     await member.remove_roles(str(r))
         await ctx.send(f"Every member in {sectionrole} has been brought back")
 
     @commands.check(member_check)
@@ -86,9 +90,10 @@ class CSRoles(commands.Cog):
     async def roleCount(self, ctx, rolename):
         cnt = 0
         for member in ctx.guild.members:
-            for role in member.roles:
-                if role.name == rolename:
-                    cnt += 1
+            if member.status == Status.online:
+                for role in member.roles:
+                    if role.name == rolename:
+                        cnt += 1
         return cnt
 
     async def distributeVC(self, ctx):
@@ -99,11 +104,12 @@ class CSRoles(commands.Cog):
             type=discord.ChannelType.voice,
         )
         for member in Main_Class_Channel.members:
-            for roles in member.roles:
-                for i in range(10):
-                    if roles.name == f"g{i+1}":
-                        await member.move_to(await self.vcName(ctx, f"g{i+1}"))
-                        break
+            if member.status == Status.online:
+                for roles in member.roles:
+                    for i in range(10):
+                        if roles.name == f"g{i+1}":
+                            await member.move_to(await self.vcName(ctx, f"g{i+1}"))
+                            break
 
     async def vcName(self, ctx, vcname):
         voice_channel = discord.utils.get(
